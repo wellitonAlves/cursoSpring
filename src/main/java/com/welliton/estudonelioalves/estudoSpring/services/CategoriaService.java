@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.welliton.estudonelioalves.estudoSpring.domain.Categoria;
+import com.welliton.estudonelioalves.estudoSpring.dto.CategoriaDTO;
 import com.welliton.estudonelioalves.estudoSpring.repository.CategoriaRepository;
 import com.welliton.estudonelioalves.estudoSpring.services.exception.DataIntegrityException;
 import com.welliton.estudonelioalves.estudoSpring.services.exception.ObjectNotFoundException;
@@ -61,6 +62,11 @@ public class CategoriaService {
 				orderBy);
 		return repo.findAll(pageRequest);
 		
+	}
+	
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		
+		return new Categoria(objDto.getId(),objDto.getNome());
 	}
 	
 }
