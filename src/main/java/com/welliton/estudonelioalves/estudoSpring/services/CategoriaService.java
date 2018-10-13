@@ -3,11 +3,15 @@ package com.welliton.estudonelioalves.estudoSpring.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.welliton.estudonelioalves.estudoSpring.domain.Categoria;
 import com.welliton.estudonelioalves.estudoSpring.repository.CategoriaRepository;
+import com.welliton.estudonelioalves.estudoSpring.services.exception.DataIntegrityException;
 import com.welliton.estudonelioalves.estudoSpring.services.exception.ObjectNotFoundException;
+
+import net.bytebuddy.implementation.bytecode.Throw;
 
 @Service
 public class CategoriaService {
@@ -31,6 +35,19 @@ public class CategoriaService {
 	public Categoria update(Categoria obj) {
 		find(obj.getId());
 		return repo.save(obj);
+	}
+
+	public void delete(Integer id) {
+		
+		find(id);
+	
+		try {
+			repo.deleteById(id);
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possivel excluir uma categoria que possui produtos");
+		}
+		
 	}
 	
 }
