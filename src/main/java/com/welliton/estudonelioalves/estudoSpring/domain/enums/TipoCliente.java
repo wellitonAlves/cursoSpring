@@ -2,7 +2,7 @@ package com.welliton.estudonelioalves.estudoSpring.domain.enums;
 
 public enum TipoCliente {
 	
-	PESSOAfISICA(1,"Pessoa Fisica"), PESSOAJURIDICA(2, "Pessoa Juridica");
+	PESSOAFISICA(1,"Pessoa Fisica"), PESSOAJURIDICA(2, "Pessoa Juridica");
 	
 	private int cod;
 	private String descricao;

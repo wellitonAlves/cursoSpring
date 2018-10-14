@@ -103,7 +103,7 @@ public class EstudoSpringApplication implements CommandLineRunner {
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
 		
-		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "369258147", TipoCliente.PESSOAfISICA);
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "369258147", TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("123456789","98765431"));
 		
 		Endereco e1 =  new Endereco(null,"Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
