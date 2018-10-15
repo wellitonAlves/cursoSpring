@@ -8,7 +8,9 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.welliton.estudonelioalves.estudoSpring.domain.Cliente;
+import com.welliton.estudonelioalves.estudoSpring.resources.validation.ClienteUpdate;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable{
 	
 	
