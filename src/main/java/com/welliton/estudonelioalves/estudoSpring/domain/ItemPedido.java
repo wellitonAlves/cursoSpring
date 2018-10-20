@@ -40,12 +40,12 @@ public class ItemPedido implements Serializable{
 	}
 	
 	@JsonIgnore
-	public Pedido getePedido() {
+	public Pedido getPedido() {
 		return id.getPedido();
 	}
 	
 
-	public Produto geteProduto() {
+	public Produto getProduto() {
 		return id.getProduto();
 	}
 	
@@ -63,12 +63,16 @@ public class ItemPedido implements Serializable{
 		return desconto;
 	}
 
-
+	
 	public void setDesconto(double desconto) {
 		this.desconto = desconto;
 	}
-
-
+	public void setPedido(Pedido pedido) {
+		id.setPedido(pedido);
+	}
+	public void setProduto(Produto produto) {
+		id.setProduto(produto);
+	}
 	public Integer getQuantidade() {
 		return quantidade;
 	}
