@@ -20,6 +20,7 @@ import com.welliton.estudonelioalves.estudoSpring.domain.PagamentoComCartao;
 import com.welliton.estudonelioalves.estudoSpring.domain.Pedido;
 import com.welliton.estudonelioalves.estudoSpring.domain.Produto;
 import com.welliton.estudonelioalves.estudoSpring.domain.enums.EstadoPagamento;
+import com.welliton.estudonelioalves.estudoSpring.domain.enums.Perfil;
 import com.welliton.estudonelioalves.estudoSpring.domain.enums.TipoCliente;
 import com.welliton.estudonelioalves.estudoSpring.repository.CategoriaRepository;
 import com.welliton.estudonelioalves.estudoSpring.repository.CidadeRepository;
@@ -134,14 +135,21 @@ public class DBService {
 		
  		Cliente cli1 = new Cliente(null, "Maria Silva", "josealves_w@yahoo.com.br", "36378912377", TipoCliente.PESSOAFISICA, pe.encode("123")); 
  		cli1.getTelefones().addAll(Arrays.asList("123456789","98765431"));
-		
+	
+ 		Cliente cli2 = new Cliente(null, "Ana Costa", "josewelliton@yahoo.com.br", "71435627261", TipoCliente.PESSOAFISICA, pe.encode("123")); 
+ 		cli1.getTelefones().addAll(Arrays.asList("78956789","45665431"));
+ 		cli2.addPerfil(Perfil.ADMIN);
+ 		
+ 		
 		Endereco e1 =  new Endereco(null,"Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
 		Endereco e2 =  new Endereco(null,"Avenida Matos", "300", "Apto 303", "Centro", "38220834", cli1, c1);
+		Endereco e3 =  new Endereco(null,"Floriano Peixoto", "2010", null, "Centro", "38220834", cli2, c2);
 		
 		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		cli2.getEnderecos().addAll(Arrays.asList(e3));
 		
-		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 		
 		SimpleDateFormat sdf =  new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
