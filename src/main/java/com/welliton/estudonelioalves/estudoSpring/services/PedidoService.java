@@ -4,8 +4,12 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.welliton.estudonelioalves.estudoSpring.domain.Cliente;
 import com.welliton.estudonelioalves.estudoSpring.domain.ItemPedido;
 import com.welliton.estudonelioalves.estudoSpring.domain.PagamentoComBoleto;
 import com.welliton.estudonelioalves.estudoSpring.domain.Pedido;
@@ -13,6 +17,8 @@ import com.welliton.estudonelioalves.estudoSpring.domain.enums.EstadoPagamento;
 import com.welliton.estudonelioalves.estudoSpring.repository.ItemPedidoRepository;
 import com.welliton.estudonelioalves.estudoSpring.repository.PagamentoRepository;
 import com.welliton.estudonelioalves.estudoSpring.repository.PedidoRepository;
+import com.welliton.estudonelioalves.estudoSpring.resources.exception.AuthorizationException;
+import com.welliton.estudonelioalves.estudoSpring.security.UserSS;
 import com.welliton.estudonelioalves.estudoSpring.services.exception.ObjectNotFoundException;
 
 @Service
@@ -39,7 +45,7 @@ public class PedidoService {
 	@Autowired
 	private EmailService emailService;
 
-	public Pedido find(Integer id) {
+	public Pedido findAll(Integer id) {
 		
 		Optional<Pedido> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -68,6 +74,16 @@ public class PedidoService {
 		itemPedidoRepository.saveAll(obj.getItens());
 		emailService.sendOrderConfirmationHtmlEmail(obj);
 		return obj;
+	}
+	
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		Cliente cliente =  clienteService.find(user.getId());
+		return repo.findByCliente(cliente, pageRequest);
 	}
 	
 }
