@@ -14,12 +14,15 @@ import org.springframework.stereotype.Service;
 import com.welliton.estudonelioalves.estudoSpring.domain.Cidade;
 import com.welliton.estudonelioalves.estudoSpring.domain.Cliente;
 import com.welliton.estudonelioalves.estudoSpring.domain.Endereco;
+import com.welliton.estudonelioalves.estudoSpring.domain.enums.Perfil;
 import com.welliton.estudonelioalves.estudoSpring.domain.enums.TipoCliente;
 import com.welliton.estudonelioalves.estudoSpring.dto.ClienteDTO;
 import com.welliton.estudonelioalves.estudoSpring.dto.ClienteNewDTO;
 import com.welliton.estudonelioalves.estudoSpring.repository.CidadeRepository;
 import com.welliton.estudonelioalves.estudoSpring.repository.ClienteRepository;
 import com.welliton.estudonelioalves.estudoSpring.repository.EnderecoRepository;
+import com.welliton.estudonelioalves.estudoSpring.resources.exception.AuthorizationException;
+import com.welliton.estudonelioalves.estudoSpring.security.UserSS;
 import com.welliton.estudonelioalves.estudoSpring.services.exception.DataIntegrityException;
 import com.welliton.estudonelioalves.estudoSpring.services.exception.ObjectNotFoundException;
 
@@ -40,6 +43,11 @@ public class ClienteService {
 
 
 	public Cliente find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		if (user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
 		
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
